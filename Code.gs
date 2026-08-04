@@ -26,7 +26,9 @@ var HEADERS = [
   'Guest #',
   'Full Name',
   'WhatsApp Number',
-  'Date of Arrival'
+  'Date of Arrival',
+  'Couple?',
+  'Children under 10?'
 ];
 
 /**
@@ -73,7 +75,9 @@ function doPost(e) {
         name,
         // Keep the leading + and spaces; store as text so Sheets doesn't mangle it.
         whatsapp,
-        arrival
+        arrival,
+        g.couple ? 'Yes' : 'No',
+        g.kids ? 'Yes' : 'No'
       ]);
     }
 

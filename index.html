@@ -398,6 +398,22 @@ nav a:hover { color: var(--pink-deep); }
 .guest-fields .form-group { margin-bottom:0; }
 .guest-fields .form-group.full { grid-column:1/-1; }
 
+/* checkbox questions */
+.check-row { grid-column:1/-1; display:flex; flex-direction:column; gap:0.7rem; margin-top:0.3rem; }
+.check-item { display:flex; align-items:flex-start; gap:0.7rem; cursor:pointer; }
+.check-item input { position:absolute; opacity:0; width:0; height:0; }
+.check-box {
+  flex-shrink:0; width:22px; height:22px; margin-top:1px;
+  border:2px solid var(--sage); border-radius:6px;
+  display:flex; align-items:center; justify-content:center;
+  transition:all .2s;
+}
+.check-item input:checked + .check-box { background:var(--sage); border-color:var(--sage); }
+.check-box svg { width:12px; height:12px; stroke:#fff; stroke-width:3; fill:none; opacity:0; transition:opacity .15s; }
+.check-item input:checked + .check-box svg { opacity:1; }
+.check-text { font-family:'Cormorant Garamond',serif; font-size:1.05rem; color:var(--text-dark); line-height:1.35; }
+.check-text .hint { display:block; font-family:'Josefin Sans',sans-serif; font-size:0.62rem; letter-spacing:0.5px; text-transform:none; color:var(--text-light); margin-top:2px; }
+
 .add-guest-btn { width:100%; padding:1rem; margin:0.5rem 0 1.5rem; background:transparent; color:var(--sage-deep); border:2px dashed rgba(163,184,158,0.35); border-radius:14px; font-family:'Josefin Sans',sans-serif; font-size:0.75rem; letter-spacing:3px; text-transform:uppercase; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:0.5rem; transition:all 0.3s; }
 .add-guest-btn:hover { background:rgba(163,184,158,0.08); border-color:var(--sage); }
 .add-guest-btn .plus { font-size:1.2rem; }
@@ -572,6 +588,20 @@ footer .sub { font-family:'Josefin Sans',sans-serif; font-size:0.6rem; letter-sp
           <div class="form-group full"><label>Full Name</label><input type="text" name="guest_name_1" placeholder="Enter full name" required></div>
           <div class="form-group"><label>WhatsApp Number</label><input type="tel" name="guest_whatsapp_1" placeholder="+91 98765 43210" required></div>
           <div class="form-group"><label>Date of Arrival</label><input type="date" name="guest_arrival_1" required></div>
+          <div class="check-row">
+            <label class="check-item">
+              <input type="checkbox" name="guest_couple_1">
+              <span class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+              <span class="check-text">Are you a couple?</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" name="guest_kids_1">
+              <span class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+              <span class="check-text">Do you have children?
+                <span class="hint">Tick this only if your child is under 10 — otherwise add them as a separate guest above.</span>
+              </span>
+            </label>
+          </div>
         </div>
       </div>
     </div>
@@ -998,6 +1028,20 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="form-group full"><label>Full Name</label><input type="text" name="guest_name_${guestCount}" placeholder="Enter full name" required></div>
         <div class="form-group"><label>WhatsApp Number</label><input type="tel" name="guest_whatsapp_${guestCount}" placeholder="+91 98765 43210" required></div>
         <div class="form-group"><label>Date of Arrival</label><input type="date" name="guest_arrival_${guestCount}" required></div>
+        <div class="check-row">
+          <label class="check-item">
+            <input type="checkbox" name="guest_couple_${guestCount}">
+            <span class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+            <span class="check-text">Are you a couple?</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="guest_kids_${guestCount}">
+            <span class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+            <span class="check-text">Do you have children?
+              <span class="hint">Tick this only if your child is under 10 — otherwise add them as a separate guest above.</span>
+            </span>
+          </label>
+        </div>
       </div>`;
     document.getElementById('guestList').appendChild(entry);
     if (hasGSAP) gsap.from(entry, { opacity: 0, y: -10, duration: 0.4, ease: 'power2.out' });
@@ -1024,8 +1068,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const name = entry.querySelector('input[name^="guest_name"]').value.trim();
       const whatsapp = entry.querySelector('input[name^="guest_whatsapp"]').value.trim();
       const arrival = entry.querySelector('input[name^="guest_arrival"]').value;
+      const couple = entry.querySelector('input[name^="guest_couple"]').checked;
+      const kids = entry.querySelector('input[name^="guest_kids"]').checked;
       if (!name || !whatsapp || !arrival) valid = false;
-      guests.push({ name, whatsapp, arrivalDate: arrival });
+      guests.push({ name, whatsapp, arrivalDate: arrival, couple, kids });
     });
     if (!valid) { showMessage('Please fill in all fields for every guest', 'error'); return; }
 
