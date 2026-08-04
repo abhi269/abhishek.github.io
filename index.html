@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sagar & Parul — Wedding Celebration</title>
 <script>document.documentElement.className += ' js';</script>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@300;400&family=Great+Vibes&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@300;400&family=Great+Vibes&family=Dancing+Script:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -155,8 +155,11 @@ nav a:hover { color: var(--pink-deep); }
 
 .hero-content {
   position: relative;
-  z-index: 8;
+  z-index: 400;              /* above the scattered photos */
   text-align: center;
+}
+.hero-names, .hero-date, .hero-sub {
+  text-shadow: 0 2px 30px rgba(255,255,255,0.85), 0 1px 3px rgba(255,255,255,0.8);
 }
 
 .hero-date {
@@ -169,13 +172,14 @@ nav a:hover { color: var(--pink-deep); }
 }
 
 .hero-names {
-  font-family: 'Great Vibes', cursive;
-  font-size: clamp(3.5rem, 11vw, 9rem);
-  line-height: 1.15;
-  color: var(--text-dark);
-  text-shadow: 0 4px 40px rgba(242,209,209,0.4);
+  font-family: 'Dancing Script', cursive;
+  font-weight: 700;
+  font-size: clamp(3.5rem, 11vw, 8.5rem);
+  line-height: 1.1;
+  color: #9c5f6e;                         /* warm dusty rose */
+  text-shadow: 0 2px 30px rgba(255,255,255,0.9), 0 2px 40px rgba(242,209,209,0.5);
 }
-.hero-names .amp { color: var(--pink-deep); opacity: 0.75; margin: 0 0.15em; }
+.hero-names .amp { color: #c98b76; opacity: 0.85; margin: 0 0.12em; font-weight: 600; }
 
 .hero-sub {
   font-family: 'Josefin Sans', sans-serif;
@@ -192,60 +196,70 @@ nav a:hover { color: var(--pink-deep); }
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  z-index: 9;
+  z-index: 500;               /* above all scattered photos */
   opacity: 0;
   pointer-events: none;
   padding: 2rem;
 }
+.save-date .sd-label,
+.save-date .sd-dates,
+.save-date .sd-sub {
+  text-shadow: 0 2px 24px rgba(255,255,255,0.9), 0 1px 3px rgba(255,255,255,0.9);
+}
 .save-date .sd-label {
-  font-family: 'Great Vibes', cursive;
-  font-size: clamp(3rem, 8vw, 6rem);
-  color: var(--text-dark);
+  font-family: 'Dancing Script', cursive;
+  font-weight: 700;
+  font-size: clamp(4rem, 11vw, 8rem);
+  color: #7d6a9c;                        /* soft plum — pastel, prominent */
   line-height: 1;
-  text-shadow: 0 4px 40px rgba(255,255,255,0.7);
 }
 .save-date .sd-dates {
   font-family: 'Josefin Sans', sans-serif;
-  font-size: clamp(1rem, 2.4vw, 1.5rem);
-  letter-spacing: 6px;
+  font-weight: 400;
+  font-size: clamp(1.15rem, 3vw, 1.9rem);
+  letter-spacing: 7px;
   text-transform: uppercase;
-  color: var(--pink-deep);
-  margin-top: 1.2rem;
+  color: #9c5f6e;                        /* dusty rose, ties to the names */
+  margin-top: 1.4rem;
 }
 .save-date .sd-sub {
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 0.72rem;
-  letter-spacing: 5px;
-  text-transform: uppercase;
+  font-family: 'Dancing Script', cursive;
+  font-weight: 600;
+  font-size: clamp(1.4rem, 3vw, 2rem);
   color: var(--sage-deep);
-  margin-top: 1rem;
+  margin-top: 0.8rem;
 }
 
-/* ===== 3D PHOTO TUNNEL ===== */
+/* ===== SCATTERED PHOTO FLY-THROUGH ===== */
 .story-stage {
   position: absolute;
   inset: 0;
   z-index: 6;
-  perspective: 1100px;
-  perspective-origin: 50% 45%;
   overflow: hidden;
 }
 
 .story-photo {
   position: absolute;
-  top: 50%; left: 50%;
-  width: min(66vw, 440px);
-  height: min(78vh, 580px);
-  margin: 0;
-  border-radius: 18px;
+  top: 50%; left: 50%;              /* JS sets a per-photo offset via left/top */
+  border-radius: 12px;
   overflow: hidden;
-  transform: translate(-50%, -50%) translateZ(0);
-  transform-style: preserve-3d;
-  backface-visibility: hidden;
-  box-shadow: 0 30px 90px rgba(90,60,60,0.25), inset 0 0 60px rgba(255,255,255,0.25);
-  border: 3px solid rgba(255,255,255,0.55);
+  line-height: 0;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 24px 70px rgba(90,60,60,0.28);
+  border: 4px solid rgba(255,255,255,0.7);
   will-change: transform, opacity;
   opacity: 0;
+  backface-visibility: hidden;
+}
+
+/* Photo shown at its NATURAL aspect ratio — never cropped.
+   Only capped so it fits the screen. */
+.story-photo img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: min(42vw, 360px);
+  max-height: min(60vh, 460px);
 }
 
 /* placeholder art inside each photo (swap for <img>) */
@@ -302,7 +316,7 @@ nav a:hover { color: var(--pink-deep); }
 /* ===== ITINERARY ===== */
 .itinerary { position: relative; padding: 7rem 2rem; overflow: hidden; }
 .sec-title { text-align:center; margin-bottom:4rem; }
-.sec-title h2 { font-family:'Great Vibes',cursive; font-size:clamp(2.5rem,6vw,4.8rem); color:var(--text-dark); text-shadow:0 3px 24px rgba(242,209,209,0.3); }
+.sec-title h2 { font-family:'Dancing Script',cursive; font-weight:700; font-size:clamp(2.6rem,6.5vw,5rem); color:#9c5f6e; text-shadow:0 3px 24px rgba(242,209,209,0.3); }
 .sec-title p { font-family:'Josefin Sans',sans-serif; font-size:0.75rem; letter-spacing:4px; text-transform:uppercase; color:var(--sage); margin-top:0.5rem; }
 
 .timeline-wrap { max-width: 860px; margin: 0 auto; position: relative; }
@@ -319,7 +333,7 @@ nav a:hover { color: var(--pink-deep); }
 .thread path { fill: none; stroke: url(#threadGrad); stroke-width: 2; vector-effect: non-scaling-stroke; shape-rendering: geometricPrecision; }
 
 .day-header { text-align:center; position:relative; margin: 2.5rem 0 2.5rem; }
-.day-header h3 { font-family:'Great Vibes',cursive; font-size:2.4rem; color:var(--pink-deep); display:inline-block; padding:0.4rem 2rem; }
+.day-header h3 { font-family:'Dancing Script',cursive; font-weight:700; font-size:2.8rem; color:var(--pink-deep); display:inline-block; padding:0.4rem 2rem; }
 .day-header .date { font-family:'Josefin Sans',sans-serif; font-size:0.7rem; letter-spacing:3px; text-transform:uppercase; color:var(--sage); }
 
 .event-card {
@@ -398,7 +412,7 @@ nav a:hover { color: var(--pink-deep); }
 .form-message.error { color:var(--pink-deep); }
 
 footer { text-align:center; padding:3.5rem 2rem; position:relative; z-index:5; }
-footer p { font-family:'Great Vibes',cursive; font-size:2rem; color:var(--text-dark); }
+footer p { font-family:'Dancing Script',cursive; font-weight:700; font-size:2.6rem; color:#9c5f6e; }
 footer .sub { font-family:'Josefin Sans',sans-serif; font-size:0.6rem; letter-spacing:3px; text-transform:uppercase; color:var(--text-light); margin-top:0.8rem; }
 
 /* ===== RESPONSIVE ===== */
@@ -717,64 +731,74 @@ document.addEventListener('DOMContentLoaded', () => {
   const saveDate = document.getElementById('saveDate');
   const stage = document.getElementById('storyStage');
 
-  // The 10 milestones (earliest → wedding). Swap emoji/caption/year freely,
-  // or replace the whole .ph-art with an <img> — see PHOTO-TUNNEL-GUIDE.md.
-  const MILESTONES = [
-    { year: '2018', cap: 'Where it began',    emoji: '☕', bg: ['#f7e6e6','#eef2ea'] },
-    { year: '2019', cap: 'First adventure',   emoji: '🎒', bg: ['#eef2ea','#e9eef5'] },
-    { year: '2020', cap: 'Through it all',    emoji: '🏡', bg: ['#f7efe1','#f7e6e6'] },
-    { year: '2021', cap: 'Moving in',         emoji: '📦', bg: ['#e9eef5','#eef2ea'] },
-    { year: '2022', cap: 'The families meet', emoji: '🍽️', bg: ['#f7e6e6','#f7efe1'] },
-    { year: '2023', cap: 'Endless journeys',  emoji: '✈️', bg: ['#eef2ea','#f7e6e6'] },
-    { year: '2024', cap: 'The proposal',      emoji: '💍', bg: ['#f7efe1','#e9eef5'] },
-    { year: '2025', cap: 'Engagement',        emoji: '🥂', bg: ['#f7e6e6','#eef2ea'] },
-    { year: '2025', cap: 'Pre-wedding bliss', emoji: '🌸', bg: ['#e9eef5','#f7efe1'] },
-    { year: '2026', cap: 'Married at last',   emoji: '💒', bg: ['#f7d9d9','#e7f0e3'] },
+  // Sagar & Parul's real photos, earliest → latest. The last one is the
+  // frame that "sticks" while the Save-the-Date rises over it.
+  // Reorder this list freely to change the story sequence.
+  const PHOTOS = [
+    'p01.jpg','p02.jpg','p03.jpg','p04.jpg','p05.jpg','p06.jpg',
+    'p07.jpg','p08.jpg','p09.jpg','p10.jpg','p11.jpg','p12.jpg',
+    'p13.jpg','p14.jpg','p15.jpg','p16.jpg','p18.jpg','p17.jpg'
   ];
-  const N = MILESTONES.length;
+  const N = PHOTOS.length;
 
   // Build photo cards
-  const photos = MILESTONES.map((m, i) => {
+  const photos = PHOTOS.map((src, i) => {
     const el = document.createElement('div');
     el.className = 'story-photo';
-    el.style.zIndex = i; // newer photos render on top
-    el.style.background = `linear-gradient(150deg, ${m.bg[0]}, ${m.bg[1]})`;
-    el.innerHTML = `
-      <div class="ph-num">${String(i+1).padStart(2,'0')} / ${N}</div>
-      <div class="ph-art">
-        <div class="ph-emoji">${m.emoji}</div>
-        <div class="ph-caption">${m.cap}</div>
-        <div class="ph-year">${m.year}</div>
-      </div>`;
+    el.innerHTML = `<img src="photos/${src}" alt="Sagar & Parul" loading="eager">`;
     stage.appendChild(el);
     return el;
   });
 
-  const SPACING = 900;   // px of translateZ per photo-step (depth of the tunnel)
-  const FADE_BACK = 1.7; // how many steps an older photo takes to fade into the deep
-  const FADE_FRONT = 1.05; // how quickly an upcoming photo fades in as it approaches
+  // Each photo gets its own fixed screen spot (scattered) so no two ever sit
+  // on top of each other. First & last are centred (names / Save-the-Date sit
+  // over them). The rest use a golden-angle spiral → neighbours are always far
+  // apart. Recomputed on resize.
+  const pos = new Array(N);
+  function layoutPositions() {
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const rx = Math.min(vw * 0.26, 300);
+    const ry = Math.min(vh * 0.24, 260);
+    for (let i = 0; i < N; i++) {
+      if (i === 0 || i === N - 1) { pos[i] = { x: 0, y: 0 }; continue; }
+      const ang = i * 2.399963;                 // golden angle (rad)
+      const rad = 0.55 + 0.45 * ((i * 0.618) % 1); // vary the distance a bit
+      pos[i] = { x: Math.cos(ang) * rx * rad, y: Math.sin(ang) * ry * rad };
+    }
+  }
+  layoutPositions();
+
+  const VIS = 1.15;      // how many steps on each side a photo stays visible
+  const PHOTO_END = 0.8; // photos finish flying by this scroll progress; the
+                         // remaining 0.8→1.0 is a "hold" for the burst + text.
   let landedBurst = false;
 
   function renderTunnel(p) {
-    // seg is a continuous position along the stack: 0 = first photo front, N-1 = wedding front
-    const seg = p * (N - 1);
+    // Map the photo sequence into 0 → PHOTO_END, so all photos are done before
+    // the flower burst and Save-the-Date appear.
+    const seg = Math.min(p / PHOTO_END, 1) * (N - 1);
     for (let i = 0; i < N; i++) {
-      const d = seg - i;               // >0 : already passed (older, receding)  <0 : upcoming (newer)
-      const z = -d * SPACING;          // older -> negative Z (into the screen / infinity), newer -> toward viewer
-      let op;
-      if (d >= 0) op = 1 - d / FADE_BACK;      // recede & fade away
-      else op = 1 + d / FADE_FRONT;            // approach & fade in on top
-      op = Math.max(0, Math.min(1, op));
+      const d = seg - i;                 // 0 = this photo's moment
+      const ad = Math.abs(d);
+      const op = Math.max(0, Math.min(1, 1 - ad / VIS));
+      // grows to full size at its moment, shrinks away before & after → "comes
+      // in from its spot, then falls back and disappears at the same spot".
+      const s = 1 - Math.min(ad, 1) * 0.42;
+      const blur = Math.min(ad, 1) * 3;
+      const P = pos[i];
 
       const ph = photos[i];
       ph.style.opacity = op;
-      // subtle blur for the ones deep in the tunnel — always set (0 when none)
-      // so the property never toggles on/off, which can cause layer flicker.
-      const blur = d > 0.15 ? Math.min((d - 0.15) * 1.6, 4) : 0;
-      ph.style.transform = `translate3d(-50%, -50%, ${z}px)`;
+      ph.style.visibility = op <= 0.002 ? 'hidden' : 'visible';
+      ph.style.left = `calc(50% + ${P.x}px)`;
+      ph.style.top  = `calc(50% + ${P.y}px)`;
+      ph.style.transform = `translate(-50%, -50%) scale(${s.toFixed(3)})`;
       ph.style.filter = `blur(${blur.toFixed(2)}px)`;
+      // whichever photo is nearest its moment renders on top
+      ph.style.zIndex = Math.round(200 - ad * 20);
     }
   }
+  window.addEventListener('resize', () => { layoutPositions(); });
 
   if (hasGSAP && !reduced) {
     // Intro: names + fades in over the first (earliest) photo.
@@ -793,27 +817,25 @@ document.addEventListener('DOMContentLoaded', () => {
     ScrollTrigger.create({
       trigger: '.hero',
       start: 'top top',
-      end: '+=520%',
+      end: '+=' + (N * 46) + '%',   // scales with number of photos
       scrub: 0.7,
       pin: true,
       onUpdate: (self) => {
         const p = self.progress;
         renderTunnel(p);
 
-        // TEXT 1 (names) — sits on top of every photo, opacity slowly dropping
-        // across the whole journey, gone by ~85% through.
-        heroContent.style.opacity = Math.max(0, 1 - p / 0.85);
+        // TEXT 1 (names) — fades out over the first part of the journey
+        heroContent.style.opacity = Math.max(0, 1 - p / 0.5);
 
         // Scroll hint fades away early
-        document.querySelector('.scroll-hint').style.opacity = Math.max(0, 1 - p / 0.25);
+        document.querySelector('.scroll-hint').style.opacity = Math.max(0, 1 - p / 0.2);
 
-        // TEXT 2 (Save the Date) — rises over the final photo as it sticks,
-        // then stays full for the rest of the pin.
-        saveDate.style.opacity = Math.max(0, Math.min((p - 0.86) / 0.10, 1));
+        // Photos are all done at PHOTO_END (0.8). AFTER that, the flower burst
+        // fires and Save-the-Date rises over the final (centred) photo.
+        saveDate.style.opacity = Math.max(0, Math.min((p - 0.84) / 0.10, 1));
 
-        // Gentle bloom + petals as the final wedding photo lands
-        if (!landedBurst && p > 0.9) { landedBurst = true; fireBurst(); }
-        if (landedBurst && p < 0.86) landedBurst = false;
+        if (!landedBurst && p > 0.86) { landedBurst = true; fireBurst(); }
+        if (landedBurst && p < 0.82) landedBurst = false;
       }
     });
   } else {
