@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sagar & Parul — Wedding Celebration</title>
+<script>document.documentElement.className += ' js';</script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@300;400&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --pink-soft: #f2d1d1;
+  --pink-medium: #e8a0a0;
+  --pink-deep: #d4787a;
+  --sage-light: #d5ddd2;
+  --sage: #a3b89e;
+  --sage-deep: #7a9a6f;
+  --cream: #faf7f2;
+  --gold: #c9a84c;
+  --gold-light: #e8d28a;
+  --text-dark: #3a3a3a;
+  --text-light: #6b6b6b;
+}
+
+html { -webkit-font-smoothing: antialiased; }
+
+body {
+  font-family: 'Cormorant Garamond', serif;
+  background: var(--cream);
+  color: var(--text-dark);
+  overflow-x: hidden;
+}
+
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* ===== AMBIENT GRADIENT MESH (very light, GPU) ===== */
+.gradient-mesh {
+  position: fixed;
+  inset: -20%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(40% 40% at 20% 25%, rgba(242,209,209,0.5) 0%, transparent 60%),
+    radial-gradient(45% 45% at 80% 20%, rgba(200,215,235,0.4) 0%, transparent 60%),
+    radial-gradient(50% 50% at 60% 80%, rgba(232,210,138,0.28) 0%, transparent 60%),
+    radial-gradient(40% 40% at 15% 75%, rgba(213,221,210,0.4) 0%, transparent 60%);
+  filter: blur(20px);
+  animation: meshDrift 24s ease-in-out infinite alternate;
+}
+
+@keyframes meshDrift {
+  0%   { transform: translate(0,0) scale(1); }
+  50%  { transform: translate(2%, -1.5%) scale(1.05); }
+  100% { transform: translate(-1.5%, 1.5%) scale(1.02); }
+}
+
+/* ===== CURSOR GLOW ===== */
+.cursor-glow {
+  position: fixed;
+  top: 0; left: 0;
+  width: 460px; height: 460px;
+  margin: -230px 0 0 -230px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  /* No mix-blend-mode: it forces a full-page repaint every frame (flicker). */
+  background: radial-gradient(circle, rgba(242,209,209,0.22) 0%, rgba(232,210,138,0.08) 38%, transparent 70%);
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* ===== CANVAS (ambient particles + burst) ===== */
+#fxCanvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 60;
+}
+
+/* ===== WHITE BLOOM FLASH ===== */
+#bloom {
+  position: fixed;
+  inset: 0;
+  z-index: 58;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(circle at 50% 45%, #fff 0%, rgba(255,255,255,0.85) 30%, rgba(255,248,240,0) 70%);
+}
+
+/* ===== PARALLAX ITEM LAYER ===== */
+#parallaxLayer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  overflow: visible;
+}
+
+.px-item {
+  position: absolute;
+  will-change: transform;
+  opacity: 0;
+}
+.px-item.d-far  { filter: blur(2px); }
+.px-item.d-mid  { filter: blur(0.6px); }
+.px-item.d-near { filter: blur(0); }
+
+/* ===== NAV ===== */
+nav {
+  position: fixed;
+  top: 0; width: 100%;
+  z-index: 100;
+  padding: 1.1rem 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  background: rgba(250,247,242,0.8);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(232,210,138,0.15);
+  transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+  will-change: transform;
+}
+nav a {
+  text-decoration: none;
+  color: var(--text-light);
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  transition: color 0.3s;
+}
+nav a:hover { color: var(--pink-deep); }
+
+/* ===== HERO ===== */
+.hero {
+  position: relative;
+  height: 100vh;
+  min-height: 640px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 5;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 8;
+  text-align: center;
+}
+
+.hero-date {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: var(--sage-deep);
+  margin-bottom: 1.2rem;
+}
+
+.hero-names {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(3.5rem, 11vw, 9rem);
+  line-height: 1.15;
+  color: var(--text-dark);
+  text-shadow: 0 4px 40px rgba(242,209,209,0.4);
+}
+.hero-names .amp { color: var(--pink-deep); opacity: 0.75; margin: 0 0.15em; }
+
+.hero-sub {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--sage);
+  margin-top: 1rem;
+}
+
+/* TEXT 2 — Save the Date */
+.save-date {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 9;
+  opacity: 0;
+  pointer-events: none;
+  padding: 2rem;
+}
+.save-date .sd-label {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(3rem, 8vw, 6rem);
+  color: var(--text-dark);
+  line-height: 1;
+  text-shadow: 0 4px 40px rgba(255,255,255,0.7);
+}
+.save-date .sd-dates {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: clamp(1rem, 2.4vw, 1.5rem);
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: var(--pink-deep);
+  margin-top: 1.2rem;
+}
+.save-date .sd-sub {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--sage-deep);
+  margin-top: 1rem;
+}
+
+/* ===== 3D PHOTO TUNNEL ===== */
+.story-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  perspective: 1100px;
+  perspective-origin: 50% 45%;
+  overflow: hidden;
+}
+
+.story-photo {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: min(66vw, 440px);
+  height: min(78vh, 580px);
+  margin: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  transform: translate(-50%, -50%) translateZ(0);
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  box-shadow: 0 30px 90px rgba(90,60,60,0.25), inset 0 0 60px rgba(255,255,255,0.25);
+  border: 3px solid rgba(255,255,255,0.55);
+  will-change: transform, opacity;
+  opacity: 0;
+}
+
+/* placeholder art inside each photo (swap for <img>) */
+.story-photo .ph-art {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 0.6rem;
+  text-align: center;
+}
+.story-photo .ph-emoji { font-size: 3.2rem; opacity: 0.85; }
+.story-photo .ph-caption {
+  font-family: 'Great Vibes', cursive;
+  font-size: 1.9rem;
+  color: rgba(58,58,58,0.85);
+}
+.story-photo .ph-year {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.68rem; letter-spacing: 4px; text-transform: uppercase;
+  color: rgba(122,154,111,0.9);
+}
+.story-photo .ph-num {
+  position: absolute; top: 12px; left: 14px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.6rem; letter-spacing: 2px;
+  color: rgba(58,58,58,0.4);
+}
+
+/* Reduced-motion / no-JS fallback: simple vertical gallery */
+.story-stage.flat { position: relative; height: auto; perspective: none; padding: 2rem 0; }
+.story-stage.flat .story-photo { position: relative; top:auto; left:auto; transform:none; opacity:1; margin: 1.2rem auto; }
+
+.scroll-hint {
+  position: absolute;
+  bottom: 2.2rem;
+  z-index: 8;
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+}
+.scroll-hint span { font-family:'Josefin Sans',sans-serif; font-size:0.6rem; letter-spacing:4px; text-transform:uppercase; color:var(--sage); }
+.scroll-arrow { width:18px; height:18px; border-right:1.5px solid var(--sage); border-bottom:1.5px solid var(--sage); transform:rotate(45deg); animation:bounce 2.4s ease-in-out infinite; }
+@keyframes bounce { 0%,100%{transform:rotate(45deg) translateY(0);opacity:1;} 50%{transform:rotate(45deg) translateY(10px);opacity:0.4;} }
+
+/* ===== SECTIONS ===== */
+.section { position: relative; z-index: 5; }
+
+.divider { display:flex; align-items:center; justify-content:center; padding:2.5rem 0; gap:1.2rem; position:relative; z-index:5; }
+.divider .line { width:100px; height:1px; background:linear-gradient(to right,transparent,var(--gold-light),transparent); }
+.divider .icon { font-size:1.5rem; opacity:0.4; }
+
+/* Reveal words */
+.reveal-line { overflow: hidden; display: inline-block; }
+.reveal-word { display: inline-block; }
+
+/* ===== ITINERARY ===== */
+.itinerary { position: relative; padding: 7rem 2rem; overflow: hidden; }
+.sec-title { text-align:center; margin-bottom:4rem; }
+.sec-title h2 { font-family:'Great Vibes',cursive; font-size:clamp(2.5rem,6vw,4.8rem); color:var(--text-dark); text-shadow:0 3px 24px rgba(242,209,209,0.3); }
+.sec-title p { font-family:'Josefin Sans',sans-serif; font-size:0.75rem; letter-spacing:4px; text-transform:uppercase; color:var(--sage); margin-top:0.5rem; }
+
+.timeline-wrap { max-width: 860px; margin: 0 auto; position: relative; }
+
+/* golden thread (SVG) */
+.thread {
+  position: absolute;
+  left: 50%; top: 0;
+  transform: translateX(-50%);
+  height: 100%;
+  width: 40px;
+  pointer-events: none;
+}
+.thread path { fill: none; stroke: url(#threadGrad); stroke-width: 2; vector-effect: non-scaling-stroke; shape-rendering: geometricPrecision; }
+
+.day-header { text-align:center; position:relative; margin: 2.5rem 0 2.5rem; }
+.day-header h3 { font-family:'Great Vibes',cursive; font-size:2.4rem; color:var(--pink-deep); display:inline-block; padding:0.4rem 2rem; }
+.day-header .date { font-family:'Josefin Sans',sans-serif; font-size:0.7rem; letter-spacing:3px; text-transform:uppercase; color:var(--sage); }
+
+.event-card {
+  position: relative;
+  width: 44%;
+  padding: 2rem;
+  background: rgba(255,255,255,0.78);
+  backdrop-filter: blur(8px);
+  border-radius: 22px;
+  border: 1px solid rgba(232,210,138,0.18);
+  box-shadow: 0 10px 50px rgba(0,0,0,0.04), inset 0 0 30px rgba(255,255,255,0.35);
+  margin-bottom: 2.5rem;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+.event-card.left { margin-right: auto; }
+.event-card.right { margin-left: auto; }
+.event-card::after {
+  content:''; position:absolute; top:2.4rem; width:14px; height:14px;
+  background:var(--gold-light); border-radius:50%; border:3px solid var(--cream);
+  box-shadow:0 0 0 2px var(--gold-light), 0 0 18px rgba(232,210,138,0.5);
+}
+.event-card.left::after { right:-40px; }
+.event-card.right::after { left:-40px; }
+.event-icon { font-size:2.5rem; margin-bottom:0.7rem; }
+.event-card h4 { font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:600; margin-bottom:0.25rem; }
+.event-time { font-family:'Josefin Sans',sans-serif; font-size:0.7rem; letter-spacing:2px; text-transform:uppercase; color:var(--sage-deep); margin-bottom:0.7rem; }
+.event-card p { font-size:1.1rem; color:var(--text-light); line-height:1.6; }
+
+/* ===== RSVP ===== */
+.rsvp { position: relative; padding: 7rem 2rem; overflow: hidden; }
+.rsvp-form {
+  max-width: 580px; margin: 0 auto;
+  background: rgba(255,255,255,0.82);
+  backdrop-filter: blur(10px);
+  border-radius: 28px;
+  padding: 3rem;
+  border: 1px solid rgba(232,210,138,0.18);
+  box-shadow: 0 18px 70px rgba(0,0,0,0.05), inset 0 0 40px rgba(255,255,255,0.4);
+  position: relative; z-index: 6;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+.form-group { margin-bottom: 1.5rem; }
+.form-group label { display:block; font-family:'Josefin Sans',sans-serif; font-size:0.7rem; letter-spacing:3px; text-transform:uppercase; color:var(--text-light); margin-bottom:0.6rem; }
+.form-group input {
+  width:100%; padding:0.9rem 1.2rem;
+  border:1px solid rgba(163,184,158,0.25); border-radius:14px;
+  background:rgba(255,255,255,0.55); font-family:'Cormorant Garamond',serif;
+  font-size:1.1rem; color:var(--text-dark); outline:none;
+  transition:border-color 0.3s, box-shadow 0.3s;
+}
+.form-group input:focus { border-color:var(--sage); box-shadow:0 0 0 3px rgba(163,184,158,0.12); }
+
+#guestList { display:flex; flex-direction:column; gap:1.2rem; }
+.guest-entry { background:rgba(250,247,242,0.72); border:1px solid rgba(232,210,138,0.12); border-radius:18px; padding:1.5rem; position:relative; }
+.guest-entry-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; }
+.guest-number { font-family:'Josefin Sans',sans-serif; font-size:0.7rem; letter-spacing:2px; text-transform:uppercase; color:var(--pink-deep); }
+.remove-guest-btn { background:none; border:none; cursor:pointer; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--text-light); font-size:1.2rem; transition:all 0.2s; }
+.remove-guest-btn:hover { background:rgba(212,120,122,0.1); color:var(--pink-deep); }
+.guest-fields { display:grid; grid-template-columns:1fr 1fr; gap:0.8rem; }
+.guest-fields .form-group { margin-bottom:0; }
+.guest-fields .form-group.full { grid-column:1/-1; }
+
+.add-guest-btn { width:100%; padding:1rem; margin:0.5rem 0 1.5rem; background:transparent; color:var(--sage-deep); border:2px dashed rgba(163,184,158,0.35); border-radius:14px; font-family:'Josefin Sans',sans-serif; font-size:0.75rem; letter-spacing:3px; text-transform:uppercase; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:0.5rem; transition:all 0.3s; }
+.add-guest-btn:hover { background:rgba(163,184,158,0.08); border-color:var(--sage); }
+.add-guest-btn .plus { font-size:1.2rem; }
+
+.submit-btn { width:100%; padding:1.1rem; background:linear-gradient(135deg,var(--sage),var(--sage-deep)); color:#fff; border:none; border-radius:14px; font-family:'Josefin Sans',sans-serif; font-size:0.8rem; letter-spacing:4px; text-transform:uppercase; cursor:pointer; transition:all 0.3s; box-shadow:0 4px 20px rgba(122,154,111,0.22); }
+.submit-btn:hover { transform:translateY(-2px); box-shadow:0 10px 32px rgba(122,154,111,0.32); }
+.submit-btn.loading { pointer-events:none; opacity:0.7; }
+
+.form-message { text-align:center; margin-top:1.2rem; font-family:'Cormorant Garamond',serif; font-size:1.1rem; opacity:0; transition:opacity 0.4s; }
+.form-message.show { opacity:1; }
+.form-message.success { color:var(--sage-deep); }
+.form-message.error { color:var(--pink-deep); }
+
+footer { text-align:center; padding:3.5rem 2rem; position:relative; z-index:5; }
+footer p { font-family:'Great Vibes',cursive; font-size:2rem; color:var(--text-dark); }
+footer .sub { font-family:'Josefin Sans',sans-serif; font-size:0.6rem; letter-spacing:3px; text-transform:uppercase; color:var(--text-light); margin-top:0.8rem; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) { .cutout-inner { width:190px; height:270px; } }
+@media (max-width: 768px) {
+  nav { gap:1.2rem; padding:0.8rem 1rem; }
+  nav a { font-size:0.65rem; letter-spacing:2px; }
+  .cutout-inner { width:130px; height:185px; }
+  .cutout-name { font-size:1.2rem; }
+  .event-card { width:calc(100% - 46px); margin-left:46px !important; }
+  .event-card::after { left:-38px !important; right:auto !important; }
+  .thread { left:23px; transform:none; }
+  .rsvp-form { padding:2rem 1.5rem; }
+  .guest-fields { grid-template-columns:1fr; }
+  .cursor-glow { display:none; }
+}
+@media (max-width: 480px) { .cutout-inner { width:100px; height:145px; } .cutout-name{font-size:1rem;} }
+
+@media (prefers-reduced-motion: reduce) {
+  .gradient-mesh { animation: none; }
+}
+
+/* ===== ANTI-FLICKER: stabilise animated text/photos on the GPU ===== */
+.hero-names, .save-date, .sec-title h2, .reveal-word, footer p {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+.story-photo, .px-item { -webkit-backface-visibility: hidden; }
+
+/* Pre-hide elements JS will animate in, so they don't flash visible→hidden
+   on load. Only when motion is allowed; scoped to html.js so a JS failure
+   still shows everything. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-fade],
+  html.js [data-anim],
+  html.js [data-reveal] { opacity: 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="gradient-mesh"></div>
+<div class="cursor-glow" id="cursorGlow"></div>
+<div id="parallaxLayer"></div>
+<div id="bloom"></div>
+<canvas id="fxCanvas"></canvas>
+
+<nav id="mainNav">
+  <a href="#home">Home</a>
+  <a href="#events">Events</a>
+  <a href="#rsvp">RSVP</a>
+</nav>
+
+<!-- ==================== HERO / PHOTO TUNNEL ==================== -->
+<section class="hero" id="home">
+  <!-- 3D photo tunnel: earliest photo → recedes into depth → newer rises on top → wedding -->
+  <div class="story-stage" id="storyStage"></div>
+
+  <!-- TEXT 1 — the couple's names, fades slowly across the journey -->
+  <div class="hero-content" id="heroContent">
+    <div class="hero-date" data-fade>A love story in ten frames</div>
+    <h1 class="hero-names" id="heroNames">
+      <span class="reveal-word">Sagar</span> <span class="amp reveal-word">&</span> <span class="reveal-word">Parul</span>
+    </h1>
+    <div class="hero-sub" data-fade>are getting married</div>
+  </div>
+
+  <!-- TEXT 2 — rises over the final wedding photo as it sticks -->
+  <div class="save-date" id="saveDate">
+    <div class="sd-label">Save the Date</div>
+    <div class="sd-dates">25 &amp; 26 November 2026</div>
+    <div class="sd-sub">Sagar &amp; Parul</div>
+  </div>
+
+  <div class="scroll-hint" data-fade>
+    <span>Scroll through their journey</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- ==================== ITINERARY ==================== -->
+<section class="itinerary section" id="events">
+  <div class="sec-title">
+    <h2 data-reveal>Wedding Celebrations</h2>
+    <p data-fade>Two days of love & joy</p>
+  </div>
+
+  <div class="timeline-wrap" id="timelineWrap">
+    <svg class="thread" id="thread" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="threadGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#e8d28a"/>
+          <stop offset="50%" stop-color="#c9a84c"/>
+          <stop offset="100%" stop-color="#e8a0a0"/>
+        </linearGradient>
+      </defs>
+      <path id="threadPath" d="" />
+    </svg>
+
+    <div class="day-header" data-anim>
+      <h3>Day One</h3>
+      <div class="date">November 25, 2026</div>
+    </div>
+
+    <div class="event-card left" data-anim>
+      <div class="event-icon">🌿</div>
+      <h4>Haldi Ceremony</h4>
+      <div class="event-time">Morning — 10:00 AM</div>
+      <p>A vibrant ceremony of turmeric blessings, laughter, and love. Come dressed in yellow and join us for this joyful tradition.</p>
+    </div>
+
+    <div class="event-card right" data-anim>
+      <div class="event-icon">🎶</div>
+      <h4>Sangeet & Cocktail</h4>
+      <div class="event-time">Evening — 7:00 PM</div>
+      <p>An evening of music, dance, and celebration. Enjoy cocktails, performances, and unforgettable moments as we dance the night away.</p>
+    </div>
+
+    <div class="day-header" data-anim>
+      <h3>Day Two</h3>
+      <div class="date">November 26, 2026</div>
+    </div>
+
+    <div class="event-card left" data-anim>
+      <div class="event-icon">💍</div>
+      <h4>Wedding Ceremony</h4>
+      <div class="event-time">Evening — 7:30 PM</div>
+      <p>The moment we've been waiting for. Witness Sagar & Parul begin their forever under the stars, surrounded by family and friends.</p>
+    </div>
+
+    <div class="event-card right" data-anim>
+      <div class="event-icon">🎉</div>
+      <h4>Reception & Dinner</h4>
+      <div class="event-time">Night — 9:30 PM</div>
+      <p>Celebrate the newlyweds with a grand reception, sumptuous dinner, and dancing. Let's make this a night to remember!</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider section">
+  <div class="line"></div><div class="icon">🪷</div><div class="line"></div>
+</div>
+
+<!-- ==================== RSVP ==================== -->
+<section class="rsvp section" id="rsvp">
+  <div class="sec-title">
+    <h2 data-reveal>Join Our Celebration</h2>
+    <p data-fade>Kindly respond by November 10, 2026</p>
+  </div>
+
+  <form class="rsvp-form" id="rsvpForm" data-anim>
+    <div id="guestList">
+      <div class="guest-entry">
+        <div class="guest-entry-header"><span class="guest-number">Guest 1</span></div>
+        <div class="guest-fields">
+          <div class="form-group full"><label>Full Name</label><input type="text" name="guest_name_1" placeholder="Enter full name" required></div>
+          <div class="form-group"><label>WhatsApp Number</label><input type="tel" name="guest_whatsapp_1" placeholder="+91 98765 43210" required></div>
+          <div class="form-group"><label>Date of Arrival</label><input type="date" name="guest_arrival_1" required></div>
+        </div>
+      </div>
+    </div>
+    <button type="button" class="add-guest-btn" id="addGuestBtn"><span class="plus">+</span> Add Another Guest</button>
+    <button type="submit" class="submit-btn" id="submitBtn">Send RSVP</button>
+    <div class="form-message" id="formMessage"></div>
+  </form>
+</section>
+
+<footer class="section">
+  <p>Sagar & Parul</p>
+  <p class="sub">Forever begins here</p>
+</footer>
+
+<!-- ==================== LIBS ==================== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const hasGSAP = typeof gsap !== 'undefined';
+
+  /* ============================================================
+     1) LENIS SMOOTH SCROLL  (synced with GSAP ScrollTrigger)
+     ============================================================ */
+  if (hasGSAP) {
+    if (gsap.registerPlugin) gsap.registerPlugin(ScrollTrigger);
+    gsap.config({ force3D: true });
+    if (window.ScrollTrigger) ScrollTrigger.config({ ignoreMobileResize: true });
+  }
+
+  let lenis = null;
+  if (typeof Lenis !== 'undefined' && !reduced) {
+    lenis = new Lenis({ lerp: 0.09, wheelMultiplier: 1, smoothWheel: true });
+    lenis.on('scroll', () => { if (window.ScrollTrigger) ScrollTrigger.update(); });
+    gsap.ticker.add((t) => lenis.raf(t * 1000));
+    gsap.ticker.lagSmoothing(0);
+  }
+
+  // Smooth anchor links
+  document.querySelectorAll('nav a').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (lenis) lenis.scrollTo(target, { offset: -60, duration: 1.4 });
+      else target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  /* ============================================================
+     2) CURSOR GLOW
+     ============================================================ */
+  const glow = document.getElementById('cursorGlow');
+  let gx = window.innerWidth / 2, gy = window.innerHeight / 2, cgx = gx, cgy = gy;
+  window.addEventListener('mousemove', e => { gx = e.clientX; gy = e.clientY; });
+  (function glowLoop() {
+    cgx += (gx - cgx) * 0.12; cgy += (gy - cgy) * 0.12;
+    glow.style.transform = `translate(${cgx}px, ${cgy}px)`;
+    requestAnimationFrame(glowLoop);
+  })();
+
+  /* ============================================================
+     3) CANVAS — ambient dream particles + convergence burst
+     ============================================================ */
+  const canvas = document.getElementById('fxCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, DPR;
+  function sizeCanvas() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width = W * DPR; canvas.height = H * DPR;
+    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+  sizeCanvas();
+  window.addEventListener('resize', sizeCanvas);
+
+  class Dust {
+    constructor() { this.reset(true); }
+    reset(init) {
+      this.x = Math.random() * W;
+      this.y = init ? Math.random() * H : H + 8;
+      this.r = Math.random() * 2.4 + 0.6;
+      this.vy = -(Math.random() * 0.25 + 0.06);
+      this.vx = (Math.random() - 0.5) * 0.18;
+      this.a = Math.random() * 0.22 + 0.04;
+      this.hue = Math.random() > 0.5 ? '242,209,209' : '232,210,138';
+      this.ph = Math.random() * Math.PI * 2;
+      this.pv = Math.random() * 0.01 + 0.004;
+    }
+    step() {
+      this.y += this.vy; this.ph += this.pv;
+      this.x += this.vx + Math.sin(this.ph) * 0.25;
+      if (this.y < -10) this.reset(false);
+    }
+    draw() {
+      ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, 6.283);
+      ctx.fillStyle = `rgba(${this.hue},${this.a})`; ctx.fill();
+    }
+  }
+  const dust = Array.from({ length: reduced ? 18 : 46 }, () => new Dust());
+
+  class Spark {
+    constructor(x, y) {
+      const ang = Math.random() * 6.283, sp = Math.random() * 7 + 2.5;
+      this.x = x; this.y = y;
+      this.vx = Math.cos(ang) * sp; this.vy = Math.sin(ang) * sp;
+      this.life = 1; this.decay = Math.random() * 0.014 + 0.006;
+      this.r = Math.random() * 4 + 1.5;
+      const c = ['255,255,255','242,209,209','232,210,138','213,221,210','232,160,160'];
+      this.c = c[Math.floor(Math.random() * c.length)];
+    }
+    step() { this.x += this.vx; this.y += this.vy; this.vx *= 0.965; this.vy *= 0.965; this.life -= this.decay; }
+    draw() { if (this.life <= 0) return; ctx.beginPath(); ctx.arc(this.x, this.y, this.r * this.life, 0, 6.283); ctx.fillStyle = `rgba(${this.c},${this.life * 0.85})`; ctx.fill(); }
+  }
+  let sparks = [];
+
+  function fireBurst() {
+    const cx = W / 2, cy = H / 2;
+    for (let i = 0; i < (reduced ? 60 : 160); i++) sparks.push(new Spark(cx, cy));
+    const bloom = document.getElementById('bloom');
+    if (hasGSAP) { gsap.set(bloom, { opacity: 1 }); gsap.to(bloom, { opacity: 0, duration: 1.6, ease: 'power2.out' }); }
+    spawnPetalRing(cx, cy);
+  }
+
+  (function loop() {
+    ctx.clearRect(0, 0, W, H);
+    dust.forEach(d => { d.step(); d.draw(); });
+    sparks = sparks.filter(s => s.life > 0);
+    sparks.forEach(s => { s.step(); s.draw(); });
+    requestAnimationFrame(loop);
+  })();
+
+  function spawnPetalRing(cx, cy) {
+    const petals = ['🌸','🌹','🌺','🪷','💐','🌷'];
+    const n = 14;
+    for (let i = 0; i < n; i++) {
+      const el = document.createElement('div');
+      el.textContent = petals[i % petals.length];
+      el.style.cssText = `position:fixed;left:${cx}px;top:${cy}px;font-size:${Math.random()*1.4+1.4}rem;z-index:59;pointer-events:none;will-change:transform,opacity;`;
+      document.body.appendChild(el);
+      const ang = (i / n) * 6.283 + Math.random() * 0.3;
+      const dist = 180 + Math.random() * 220;
+      if (hasGSAP) {
+        gsap.to(el, { x: Math.cos(ang) * dist, y: Math.sin(ang) * dist - 40, rotation: Math.random()*360-180, opacity: 0, duration: 1.8 + Math.random()*0.8, ease: 'power2.out', onComplete: () => el.remove() });
+      } else { el.remove(); }
+    }
+  }
+
+  /* ============================================================
+     4) 3D PHOTO TUNNEL — the love story fly-through
+     ============================================================ */
+  const heroNames = document.getElementById('heroNames');
+  const heroContent = document.getElementById('heroContent');
+  const saveDate = document.getElementById('saveDate');
+  const stage = document.getElementById('storyStage');
+
+  // The 10 milestones (earliest → wedding). Swap emoji/caption/year freely,
+  // or replace the whole .ph-art with an <img> — see PHOTO-TUNNEL-GUIDE.md.
+  const MILESTONES = [
+    { year: '2018', cap: 'Where it began',    emoji: '☕', bg: ['#f7e6e6','#eef2ea'] },
+    { year: '2019', cap: 'First adventure',   emoji: '🎒', bg: ['#eef2ea','#e9eef5'] },
+    { year: '2020', cap: 'Through it all',    emoji: '🏡', bg: ['#f7efe1','#f7e6e6'] },
+    { year: '2021', cap: 'Moving in',         emoji: '📦', bg: ['#e9eef5','#eef2ea'] },
+    { year: '2022', cap: 'The families meet', emoji: '🍽️', bg: ['#f7e6e6','#f7efe1'] },
+    { year: '2023', cap: 'Endless journeys',  emoji: '✈️', bg: ['#eef2ea','#f7e6e6'] },
+    { year: '2024', cap: 'The proposal',      emoji: '💍', bg: ['#f7efe1','#e9eef5'] },
+    { year: '2025', cap: 'Engagement',        emoji: '🥂', bg: ['#f7e6e6','#eef2ea'] },
+    { year: '2025', cap: 'Pre-wedding bliss', emoji: '🌸', bg: ['#e9eef5','#f7efe1'] },
+    { year: '2026', cap: 'Married at last',   emoji: '💒', bg: ['#f7d9d9','#e7f0e3'] },
+  ];
+  const N = MILESTONES.length;
+
+  // Build photo cards
+  const photos = MILESTONES.map((m, i) => {
+    const el = document.createElement('div');
+    el.className = 'story-photo';
+    el.style.zIndex = i; // newer photos render on top
+    el.style.background = `linear-gradient(150deg, ${m.bg[0]}, ${m.bg[1]})`;
+    el.innerHTML = `
+      <div class="ph-num">${String(i+1).padStart(2,'0')} / ${N}</div>
+      <div class="ph-art">
+        <div class="ph-emoji">${m.emoji}</div>
+        <div class="ph-caption">${m.cap}</div>
+        <div class="ph-year">${m.year}</div>
+      </div>`;
+    stage.appendChild(el);
+    return el;
+  });
+
+  const SPACING = 900;   // px of translateZ per photo-step (depth of the tunnel)
+  const FADE_BACK = 1.7; // how many steps an older photo takes to fade into the deep
+  const FADE_FRONT = 1.05; // how quickly an upcoming photo fades in as it approaches
+  let landedBurst = false;
+
+  function renderTunnel(p) {
+    // seg is a continuous position along the stack: 0 = first photo front, N-1 = wedding front
+    const seg = p * (N - 1);
+    for (let i = 0; i < N; i++) {
+      const d = seg - i;               // >0 : already passed (older, receding)  <0 : upcoming (newer)
+      const z = -d * SPACING;          // older -> negative Z (into the screen / infinity), newer -> toward viewer
+      let op;
+      if (d >= 0) op = 1 - d / FADE_BACK;      // recede & fade away
+      else op = 1 + d / FADE_FRONT;            // approach & fade in on top
+      op = Math.max(0, Math.min(1, op));
+
+      const ph = photos[i];
+      ph.style.opacity = op;
+      // subtle blur for the ones deep in the tunnel — always set (0 when none)
+      // so the property never toggles on/off, which can cause layer flicker.
+      const blur = d > 0.15 ? Math.min((d - 0.15) * 1.6, 4) : 0;
+      ph.style.transform = `translate3d(-50%, -50%, ${z}px)`;
+      ph.style.filter = `blur(${blur.toFixed(2)}px)`;
+    }
+  }
+
+  if (hasGSAP && !reduced) {
+    // Intro: names + fades in over the first (earliest) photo.
+    // Scoped to .hero so itinerary/RSVP [data-fade] elements are NOT touched here.
+    gsap.set('.hero [data-fade]', { opacity: 0, y: 24 });
+    gsap.set('#heroNames .reveal-word', { yPercent: 120, opacity: 0 });
+    gsap.set('#heroNames', { opacity: 1 });
+    renderTunnel(0);
+
+    const intro = gsap.timeline({ delay: 0.2 });
+    intro.to('#heroNames .reveal-word', { yPercent: 0, opacity: 1, duration: 1, stagger: 0.12, ease: 'power3.out' })
+         .to('.hero [data-fade]', { opacity: 1, y: 0, duration: 0.9, stagger: 0.12, ease: 'power2.out' }, '-=0.5');
+
+    // Pin the hero and scrub the fly-through. Long end = 10 photos worth of travel.
+    // scrub gives it weight; Lenis momentum makes the zoom speed rise & fall with your scroll.
+    ScrollTrigger.create({
+      trigger: '.hero',
+      start: 'top top',
+      end: '+=520%',
+      scrub: 0.7,
+      pin: true,
+      onUpdate: (self) => {
+        const p = self.progress;
+        renderTunnel(p);
+
+        // TEXT 1 (names) — sits on top of every photo, opacity slowly dropping
+        // across the whole journey, gone by ~85% through.
+        heroContent.style.opacity = Math.max(0, 1 - p / 0.85);
+
+        // Scroll hint fades away early
+        document.querySelector('.scroll-hint').style.opacity = Math.max(0, 1 - p / 0.25);
+
+        // TEXT 2 (Save the Date) — rises over the final photo as it sticks,
+        // then stays full for the rest of the pin.
+        saveDate.style.opacity = Math.max(0, Math.min((p - 0.86) / 0.10, 1));
+
+        // Gentle bloom + petals as the final wedding photo lands
+        if (!landedBurst && p > 0.9) { landedBurst = true; fireBurst(); }
+        if (landedBurst && p < 0.86) landedBurst = false;
+      }
+    });
+  } else {
+    // Reduced-motion / no-GSAP: flat vertical gallery, everything visible
+    stage.classList.add('flat');
+    photos.forEach(ph => { ph.style.opacity = 1; ph.style.transform = 'none'; ph.style.filter = 'none'; });
+    if (hasGSAP) gsap.set(['[data-fade]', '#heroNames .reveal-word'], { opacity: 1, y: 0, yPercent: 0 });
+  }
+
+  /* ============================================================
+     5) TEXT REVEALS + SECTION ANIMS
+     ============================================================ */
+  if (hasGSAP && !reduced) {
+    document.querySelectorAll('[data-reveal]').forEach(h => {
+      const words = h.textContent.trim().split(/\s+/);
+      h.innerHTML = words.map(w => `<span class="reveal-line"><span class="reveal-word">${w}</span></span>`).join(' ');
+      gsap.set(h, { opacity: 1 });                         // heading visible; words hidden by transform
+      gsap.set(h.querySelectorAll('.reveal-word'), { yPercent: 120 });
+      gsap.to(h.querySelectorAll('.reveal-word'), {
+        yPercent: 0, duration: 0.9, stagger: 0.08, ease: 'power3.out',
+        scrollTrigger: { trigger: h, start: 'top 85%', once: true }
+      });
+    });
+
+    // fromTo (not from) so the explicit end state = opacity 1 even though CSS pre-hides.
+    document.querySelectorAll('.itinerary [data-fade], .rsvp [data-fade]').forEach(el => {
+      gsap.fromTo(el, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out',
+        scrollTrigger: { trigger: el, start: 'top 88%', once: true } });
+    });
+
+    gsap.utils.toArray('[data-anim]').forEach(el => {
+      gsap.fromTo(el, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
+        scrollTrigger: { trigger: el, start: 'top 85%', once: true } });
+    });
+  }
+
+  /* ============================================================
+     6) GOLDEN THREAD — draws down the timeline on scroll
+     ============================================================ */
+  const wrap = document.getElementById('timelineWrap');
+  const threadSvg = document.getElementById('thread');
+  const threadPath = document.getElementById('threadPath');
+
+  function buildThread() {
+    const h = wrap.offsetHeight;
+    threadSvg.setAttribute('viewBox', `0 0 40 ${h}`);
+    threadSvg.style.height = h + 'px';
+    let d = `M20 0`;
+    const seg = 8, step = h / seg;
+    for (let i = 1; i <= seg; i++) {
+      const y = step * i;
+      const cx = i % 2 ? 30 : 10;
+      d += ` Q ${cx} ${y - step/2} 20 ${y}`;
+    }
+    threadPath.setAttribute('d', d);
+  }
+  function setThreadDash() {
+    const len = threadPath.getTotalLength();
+    threadPath.style.strokeDasharray = len;
+    threadPath.style.strokeDashoffset = len;
+    return len;
+  }
+  if (hasGSAP && !reduced) {
+    buildThread();
+    setThreadDash();
+    gsap.to(threadPath, {
+      strokeDashoffset: 0, ease: 'none',
+      scrollTrigger: { trigger: wrap, start: 'top 70%', end: 'bottom 80%', scrub: 0.8 }
+    });
+    window.addEventListener('resize', () => { buildThread(); setThreadDash(); ScrollTrigger.refresh(); });
+  } else {
+    threadSvg.style.display = 'none';
+  }
+
+  /* ============================================================
+     7) MULTI-DEPTH PARALLAX ITEMS (itinerary + rsvp)
+     ============================================================ */
+  const items = ['💍','💞','💗','💖','❤️','💕','🌹','🌸','💐','🌺','🌷','🪷','💌','💝','🕊️','💫','✨','🦋','🔔','🎀'];
+  const layer = document.getElementById('parallaxLayer');
+  const pxData = [];
+
+  function placeItems(section, count) {
+    const top = section.offsetTop;
+    const h = section.offsetHeight;
+    const vw = window.innerWidth;
+    for (let i = 0; i < count; i++) {
+      const emoji = items[Math.floor(Math.random() * items.length)];
+      const roll = Math.random();
+      const depth = roll < 0.4 ? 'far' : roll < 0.75 ? 'mid' : 'near';
+      const speed = depth === 'far' ? 0.10 : depth === 'mid' ? 0.26 : 0.44;
+      const baseOp = depth === 'far' ? 0.13 : depth === 'mid' ? 0.19 : 0.25;
+
+      const el = document.createElement('div');
+      el.className = `px-item d-${depth}`;
+      el.textContent = emoji;
+      el.style.fontSize = (Math.random() * 1.1 + 1.3) + 'rem';
+
+      let xf = Math.random();
+      if (Math.random() < 0.62) xf = Math.random() < 0.5 ? Math.random()*0.2 : 0.8 + Math.random()*0.2;
+      el.style.left = (xf * (vw - 50)) + 'px';
+      el.style.top = (top + Math.random() * h) + 'px';
+      layer.appendChild(el);
+
+      pxData.push({ el, speed, baseOp, ph: Math.random()*6.283, amp: Math.random()*18+6 });
+
+      if (hasGSAP) gsap.to(el, { opacity: baseOp, duration: 1.4, delay: Math.random()*0.8 + 0.2, ease: 'power1.out' });
+      else el.style.opacity = baseOp;
+    }
+  }
+
+  placeItems(document.getElementById('events'), reduced ? 10 : 24);
+  placeItems(document.getElementById('rsvp'), reduced ? 8 : 20);
+
+  (function updatePx() {
+    const sc = window.scrollY;
+    const t = Date.now() * 0.0006;
+    for (const p of pxData) {
+      const floatY = Math.sin(t + p.ph) * 8;
+      const floatX = Math.cos(t*0.7 + p.ph) * 6;
+      const drift = -sc * p.speed;
+      p.el.style.transform = `translate(${floatX + Math.sin(sc*0.001+p.ph)*p.amp*0.3}px, ${drift + floatY}px) rotate(${Math.sin(t+p.ph)*6}deg)`;
+    }
+    requestAnimationFrame(updatePx);
+  })();
+
+  /* ============================================================
+     8) NAV auto-hide
+     ============================================================ */
+  const nav = document.getElementById('mainNav');
+  let lastY = 0, navHidden = false;
+  (function navLoop(){
+    const y = window.scrollY;
+    // Hysteresis: only flip state after a meaningful move, so smooth-scroll
+    // micro-jitter can't rapidly toggle the nav (which read as flicker).
+    if (y > lastY + 8 && y > 140 && !navHidden) { nav.style.transform = 'translateY(-100%)'; navHidden = true; }
+    else if (y < lastY - 8 && navHidden) { nav.style.transform = 'translateY(0)'; navHidden = false; }
+    if (Math.abs(y - lastY) > 4) lastY = y;
+    requestAnimationFrame(navLoop);
+  })();
+
+  if (hasGSAP) {
+    window.addEventListener('load', () => ScrollTrigger.refresh());
+    setTimeout(() => ScrollTrigger.refresh(), 700);
+  }
+
+  /* ============================================================
+     9) DYNAMIC GUEST FORM
+     ============================================================ */
+  let guestCount = 1;
+  document.getElementById('addGuestBtn').addEventListener('click', () => {
+    guestCount++;
+    const entry = document.createElement('div');
+    entry.className = 'guest-entry';
+    entry.innerHTML = `
+      <div class="guest-entry-header">
+        <span class="guest-number">Guest ${guestCount}</span>
+        <button type="button" class="remove-guest-btn" title="Remove">&times;</button>
+      </div>
+      <div class="guest-fields">
+        <div class="form-group full"><label>Full Name</label><input type="text" name="guest_name_${guestCount}" placeholder="Enter full name" required></div>
+        <div class="form-group"><label>WhatsApp Number</label><input type="tel" name="guest_whatsapp_${guestCount}" placeholder="+91 98765 43210" required></div>
+        <div class="form-group"><label>Date of Arrival</label><input type="date" name="guest_arrival_${guestCount}" required></div>
+      </div>`;
+    document.getElementById('guestList').appendChild(entry);
+    if (hasGSAP) gsap.from(entry, { opacity: 0, y: -10, duration: 0.4, ease: 'power2.out' });
+    entry.querySelector('.remove-guest-btn').addEventListener('click', () => {
+      if (hasGSAP) gsap.to(entry, { opacity: 0, y: -10, duration: 0.3, onComplete: () => { entry.remove(); renumber(); } });
+      else { entry.remove(); renumber(); }
+    });
+  });
+  function renumber() {
+    document.querySelectorAll('.guest-entry').forEach((e, i) => e.querySelector('.guest-number').textContent = `Guest ${i+1}`);
+  }
+
+  /* ============================================================
+     10) RSVP → GOOGLE SHEETS
+     ============================================================ */
+  const GOOGLE_SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+
+  document.getElementById('rsvpForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    const entries = document.querySelectorAll('.guest-entry');
+    const guests = []; let valid = true;
+    entries.forEach(entry => {
+      const name = entry.querySelector('input[name^="guest_name"]').value.trim();
+      const whatsapp = entry.querySelector('input[name^="guest_whatsapp"]').value.trim();
+      const arrival = entry.querySelector('input[name^="guest_arrival"]').value;
+      if (!name || !whatsapp || !arrival) valid = false;
+      guests.push({ name, whatsapp, arrivalDate: arrival });
+    });
+    if (!valid) { showMessage('Please fill in all fields for every guest', 'error'); return; }
+
+    btn.classList.add('loading'); btn.textContent = 'SENDING...';
+
+    if (GOOGLE_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+      setTimeout(() => {
+        btn.classList.remove('loading'); btn.textContent = 'SEND RSVP';
+        showMessage('Demo mode — connect Google Sheets to go live!', 'error');
+        console.log('RSVP Data:', { guests });
+      }, 900);
+      return;
+    }
+    try {
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ guests })
+      });
+      btn.classList.remove('loading'); btn.textContent = 'SEND RSVP';
+      showMessage(`Thank you! ${guests.length} guest${guests.length>1?'s':''} registered!`, 'success');
+      this.reset();
+    } catch (err) {
+      btn.classList.remove('loading'); btn.textContent = 'SEND RSVP';
+      showMessage('Something went wrong. Please try again.', 'error');
+    }
+  });
+
+  function showMessage(text, type) {
+    const msg = document.getElementById('formMessage');
+    msg.textContent = text;
+    msg.className = `form-message show ${type}`;
+    setTimeout(() => msg.classList.remove('show'), 5000);
+  }
+});
+</script>
+</body>
+</html>
